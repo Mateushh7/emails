@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Análise de Planos - SendGrid</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .card {
+            background-color: white;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            padding: 1.5rem;
+        }
+        .nav-btn {
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            color: #4b5563;
+            transition: all 0.2s;
+        }
+        .nav-btn.active {
+            background-color: #3b82f6;
+            color: white;
+            box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1);
+        }
+        .view {
+            display: none;
+        }
+        .view.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Cabeçalho -->
+        <header class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-800">Análise de Custos e Planos: SendGrid</h1>
+            <p class="text-gray-500 mt-1">Análise baseada no histórico de envios de Jun/2024 a Ago/2025.</p>
+            <p class="text-sm text-gray-400 mt-1" id="exchangeRateNote"></p>
+        </header>
+
+        <!-- Navegação -->
+        <nav class="mb-8 p-1.5 bg-gray-200 rounded-lg flex space-x-2 max-w-md">
+            <button id="btnEssential" class="nav-btn flex-1 text-center active">Análise Essential</button>
+            <button id="btnPro" class="nav-btn flex-1 text-center">Análise Pro</button>
+            <button id="btnCompare" class="nav-btn flex-1 text-center">Comparativo</button>
+        </nav>
+
+        <!-- TELA 1: ANÁLISE ESSENTIAL -->
+        <div id="viewEssential" class="view active">
+            <!-- KPIs Essential -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="card text-center">
+                    <h3 class="text-sm font-medium text-gray-500">Custo Total (Plano 50K)</h3>
+                    <p class="text-2xl md:text-3xl font-bold text-gray-800 mt-2" id="totalCost50k"></p>
+                    <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold mt-2 px-2.5 py-0.5 rounded-full">Opção Mais Econômica</span>
+                </div>
+                <div class="card text-center">
+                    <h3 class="text-sm font-medium text-gray-500">Custo Total (Plano 100K)</h3>
+                    <p class="text-2xl md:text-3xl font-bold text-gray-800 mt-2" id="totalCost100k"></p>
+                    <span class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mt-2 px-2.5 py-0.5 rounded-full">Custo Fixo Mensal</span>
+                </div>
+                <div class="card text-center">
+                    <h3 class="text-sm font-medium text-gray-500">Economia Total</h3>
+                    <p class="text-2xl md:text-3xl font-bold mt-2 text-green-500" id="totalSavings"></p>
+                    <p class="text-xs text-gray-500 mt-1">ao optar pelo plano 50K</p>
+                </div>
+                <div class="card text-center bg-gray-800 text-white">
+                    <h3 class="text-sm font-medium text-gray-300">Recomendação Histórica</h3>
+                    <p class="text-2xl font-bold mt-2">Essentials 50K</p>
+                    <p class="text-xs text-gray-400 mt-1">Menor custo no período</p>
+                </div>
+            </div>
+             <!-- Gráfico e Conclusão -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="card lg:col-span-2">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Comparativo de Custo Mensal (USD)</h2>
+                    <div class="relative h-96"><canvas id="essentialChart"></canvas></div>
+                </div>
+                <div class="card">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Análise - Planos Essential</h2>
+                    <div class="space-y-4 text-gray-600">
+                        <p>Com base nos dados, o plano <b class="text-gray-800">Essentials 50K</b> foi a opção mais vantajosa.</p>
+                        <p>A economia total de <b class="text-green-500" id="savingsTextEssential"></b> foi alcançada mesmo com cobranças adicionais em 4 dos 15 meses.</p>
+                        <h4 class="font-semibold text-gray-700 pt-2">Trade-off a ser considerado:</h4>
+                        <ul class="list-disc list-inside space-y-2">
+                            <li><b class="text-green-600">Plano 50K:</b> Maior economia, custo mensal variável. <span class="text-xs block text-gray-500">Custo adicional de <b class="text-gray-700">$0.00133 / R$ 0,0073</b> por e-mail excedente.</span></li>
+                            <li><b class="text-blue-600">Plano 100K:</b> Custo maior, total previsibilidade orçamentária.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TELA 2: ANÁLISE PRO -->
+        <div id="viewPro" class="view">
+             <!-- KPIs Pro -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <div class="card text-center">
+                    <h3 class="text-sm font-medium text-gray-500">Custo Total (Pro 100K)</h3>
+                    <p class="text-2xl md:text-3xl font-bold text-gray-800 mt-2" id="totalCostPro"></p>
+                </div>
+                <div class="card text-center">
+                    <h3 class="text-sm font-medium text-gray-500">Custo Total (Essential 50K)</h3>
+                    <p class="text-2xl md:text-3xl font-bold text-gray-800 mt-2" id="totalCost50k_proview"></p>
+                </div>
+                <div class="card text-center">
+                    <h3 class="text-sm font-medium text-gray-500">Diferença de Custo (Pro vs Ess)</h3>
+                    <p class="text-2xl md:text-3xl font-bold mt-2 text-red-500" id="costDifferencePro"></p>
+                </div>
+            </div>
+            <!-- Gráfico e Conclusão Pro -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                <div class="card lg:col-span-2">
+                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Comparativo de Custo Mensal (USD)</h2>
+                    <div class="relative h-96"><canvas id="proChart"></canvas></div>
+                </div>
+                <div class="card">
+                     <h2 class="text-xl font-semibold text-gray-700 mb-4">Análise - Plano Pro</h2>
+                    <div class="space-y-4 text-gray-600">
+                        <p>O plano <b class="text-gray-800">Pro 100K</b> tem um custo fixo significativamente mais alto, resultando em um gasto total <b class="text-red-500" id="proCostMultiplier"></b> maior que a opção Essential mais barata no período.</p>
+                        <p>A migração para este plano se justifica pelo <b class="text-gray-800">acesso a recursos avançados</b>, não pela economia de custos.</p>
+                        <h4 class="font-semibold text-gray-700 pt-2">Quando considerar o Plano Pro?</h4>
+                         <ul class="list-disc list-inside space-y-2">
+                            <li>Necessidade de um <b class="text-blue-600">IP Dedicado</b> para reputação de envio.</li>
+                            <li>Demanda por <b class="text-blue-600">suporte via telefone</b>.</li>
+                            <li>Gerenciamento de <b class="text-blue-600">sub-usuários</b>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TELA 3: COMPARATIVO -->
+        <div id="viewCompare" class="view">
+             <div class="card">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Comparativo de Recursos: Essential vs. Pro</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Coluna Essential -->
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-green-600">Plano Essential</h3>
+                        <p class="text-gray-500 mb-4">Ideal para marketing e envios transacionais com foco em custo-benefício.</p>
+                        <p class="text-2xl font-semibold text-gray-800 mb-4" id="costEssentialCompare"></p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start"><span class="text-green-500 mr-2">✔</span> API, SMTP Relay e Webhooks</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">✔</span> Otimização de Entregabilidade</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">✔</span> Editor de Templates Dinâmicos</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">✔</span> Análises e Relatórios</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">✔</span> Suporte via Ticket & Chat</li>
+                             <li class="flex items-start"><span class="text-green-500 mr-2">✔</span> 3 dias de Histórico de Atividade</li>
+                        </ul>
+                    </div>
+                    <!-- Coluna Pro -->
+                    <div class="border-2 border-blue-500 rounded-lg p-6 relative">
+                        <span class="absolute top-0 -translate-y-1/2 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">RECURSOS ADICIONAIS</span>
+                        <h3 class="text-xl font-bold text-blue-600">Plano Pro</h3>
+                        <p class="text-gray-500 mb-4">Para empresas que precisam de maior controle, reputação e suporte especializado.</p>
+                        <p class="text-2xl font-semibold text-gray-800 mb-4" id="costProCompare"></p>
+                        <ul class="space-y-3">
+                            <li class="flex items-start"><span class="text-blue-500 mr-2">✚</span> <b class="text-gray-700">IP Dedicado Incluso</b></li>
+                            <li class="flex items-start"><span class="text-blue-500 mr-2">✚</span> <b class="text-gray-700">Suporte via Telefone</b></li>
+                             <li class="flex items-start"><span class="text-blue-500 mr-2">✚</span> Gerenciamento de Sub-usuários</li>
+                             <li class="flex items-start"><span class="text-blue-500 mr-2">✚</span> 7 dias de Histórico de Atividade</li>
+                             <li class="flex items-start"><span class="text-blue-500 mr-2">✚</span> Créditos para Teste de E-mail</li>
+                             <li class="flex items-start"><span class="text-blue-500 mr-2">✚</span> Validações de E-mail</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- CONFIGURAÇÕES E DADOS ---
+        const DOLAR_RATE = 5.50;
+        const PRO_100K_COST_USD = 89.95;
+        const historicalData = [
+            { month: 'Jun/24', emails: 39153, cost50k: 19.95, cost100k: 34.95 }, { month: 'Jul/24', emails: 50816, cost50k: 21.03, cost100k: 34.95 }, { month: 'Ago/24', emails: 43861, cost50k: 19.95, cost100k: 34.95 }, { month: 'Set/24', emails: 37341, cost50k: 19.95, cost100k: 34.95 }, { month: 'Out/24', emails: 45996, cost50k: 19.95, cost100k: 34.95 }, { month: 'Nov/24', emails: 54670, cost50k: 26.16, cost100k: 34.95 }, { month: 'Dez/24', emails: 40418, cost50k: 19.95, cost100k: 34.95 }, { month: 'Jan/25', emails: 49623, cost50k: 19.95, cost100k: 34.95 }, { month: 'Fev/25', emails: 33110, cost50k: 19.95, cost100k: 34.95 }, { month: 'Mar/25', emails: 23432, cost50k: 19.95, cost100k: 34.95 }, { month: 'Abr/25', emails: 24953, cost50k: 19.95, cost100k: 34.95 }, { month: 'Mai/25', emails: 23244, cost50k: 19.95, cost100k: 34.95 }, { month: 'Jun/25', emails: 18217, cost50k: 19.95, cost100k: 34.95 }, { month: 'Jul/25', emails: 55012, cost50k: 26.62, cost100k: 34.95 }, { month: 'Ago/25', emails: 70384, cost50k: 47.06, cost100k: 34.95 }
+        ];
+
+        const formatCurrency = (value, currency) => new Intl.NumberFormat(currency === 'BRL' ? 'pt-BR' : 'en-US', { style: 'currency', currency }).format(value);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('exchangeRateNote').textContent = `*Valores em Reais calculados com a cotação de 1 USD = ${formatCurrency(DOLAR_RATE, 'BRL')}.`;
+
+            // --- Cálculos Gerais ---
+            const totalCost50kUSD = historicalData.reduce((sum, d) => sum + d.cost50k, 0);
+            const totalCost100kUSD = historicalData.reduce((sum, d) => sum + d.cost100k, 0);
+            const totalCostProUSD = PRO_100K_COST_USD * historicalData.length;
+
+            // --- Renderização Tela 1: Essential ---
+            const savingsUSD = totalCost100kUSD - totalCost50kUSD;
+            document.getElementById('totalCost50k').innerHTML = `${formatCurrency(totalCost50kUSD, 'USD')} <span class="text-lg text-gray-500 font-medium">/ ${formatCurrency(totalCost50kUSD * DOLAR_RATE, 'BRL')}</span>`;
+            document.getElementById('totalCost100k').innerHTML = `${formatCurrency(totalCost100kUSD, 'USD')} <span class="text-lg text-gray-500 font-medium">/ ${formatCurrency(totalCost100kUSD * DOLAR_RATE, 'BRL')}</span>`;
+            document.getElementById('totalSavings').innerHTML = `${formatCurrency(savingsUSD, 'USD')} <span class="text-lg text-green-700 font-medium">/ ${formatCurrency(savingsUSD * DOLAR_RATE, 'BRL')}</span>`;
+            document.getElementById('savingsTextEssential').textContent = `${formatCurrency(savingsUSD, 'USD')} / ${formatCurrency(savingsUSD * DOLAR_RATE, 'BRL')}`;
+            
+            // --- Renderização Tela 2: Pro ---
+            const diffProVsEssUSD = totalCostProUSD - totalCost50kUSD;
+            document.getElementById('totalCostPro').innerHTML = `${formatCurrency(totalCostProUSD, 'USD')} <span class="text-lg text-gray-500 font-medium">/ ${formatCurrency(totalCostProUSD * DOLAR_RATE, 'BRL')}</span>`;
+            document.getElementById('totalCost50k_proview').innerHTML = `${formatCurrency(totalCost50kUSD, 'USD')} <span class="text-lg text-gray-500 font-medium">/ ${formatCurrency(totalCost50kUSD * DOLAR_RATE, 'BRL')}</span>`;
+            document.getElementById('costDifferencePro').innerHTML = `${formatCurrency(diffProVsEssUSD, 'USD')} <span class="text-lg text-red-700 font-medium">/ ${formatCurrency(diffProVsEssUSD * DOLAR_RATE, 'BRL')}</span>`;
+            document.getElementById('proCostMultiplier').textContent = `${(totalCostProUSD / totalCost50kUSD).toFixed(1)}x`;
+
+            // --- Renderização Tela 3: Comparativo ---
+            document.getElementById('costEssentialCompare').textContent = `${formatCurrency(19.95, 'USD')} - ${formatCurrency(47.06, 'USD')} / mês`;
+            document.getElementById('costProCompare').textContent = `${formatCurrency(PRO_100K_COST_USD, 'USD')} / mês (fixo)`;
+
+
+            // --- Lógica de Navegação ---
+            const views = document.querySelectorAll('.view');
+            const buttons = document.querySelectorAll('.nav-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', () => {
+                    buttons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    views.forEach(view => view.classList.remove('active'));
+                    
+                    if (button.id === 'btnEssential') document.getElementById('viewEssential').classList.add('active');
+                    if (button.id === 'btnPro') document.getElementById('viewPro').classList.add('active');
+                    if (button.id === 'btnCompare') document.getElementById('viewCompare').classList.add('active');
+                });
+            });
+
+            // --- Inicialização dos Gráficos ---
+            new Chart(document.getElementById('essentialChart').getContext('2d'), {
+                type: 'bar', data: { labels: historicalData.map(d => d.month), datasets: [ { label: 'Custo Plano 50K (USD)', data: historicalData.map(d => d.cost50k), backgroundColor: '#10b981' }, { label: 'Custo Plano 100K (USD)', data: historicalData.map(d => d.cost100k), backgroundColor: '#3b82f6' } ] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { callback: value => formatCurrency(value, 'USD') } } } }
+            });
+            new Chart(document.getElementById('proChart').getContext('2d'), {
+                type: 'bar', data: { labels: historicalData.map(d => d.month), datasets: [ { label: 'Custo Essential 50K (USD)', data: historicalData.map(d => d.cost50k), backgroundColor: '#10b981' }, { label: 'Custo Pro 100K (USD)', data: historicalData.map(d => PRO_100K_COST_USD), backgroundColor: '#8b5cf6' } ] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { callback: value => formatCurrency(value, 'USD') } } } }
+            });
+        });
+    </script>
+</body>
+</html>
+
