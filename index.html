@@ -51,10 +51,11 @@
         </header>
 
         <!-- Navegação -->
-        <nav class="mb-8 p-1.5 bg-gray-200 rounded-lg flex space-x-2 max-w-md">
+        <nav class="mb-8 p-1.5 bg-gray-200 rounded-lg flex flex-wrap space-x-2 max-w-xl">
             <button id="btnEssential" class="nav-btn flex-1 text-center active">Análise Essential</button>
             <button id="btnPro" class="nav-btn flex-1 text-center">Análise Pro</button>
             <button id="btnCompare" class="nav-btn flex-1 text-center">Comparativo</button>
+            <button id="btnActionPlan" class="nav-btn flex-1 text-center mt-2 md:mt-0">Plano de Ação</button>
         </nav>
 
         <!-- TELA 1: ANÁLISE ESSENTIAL -->
@@ -217,6 +218,138 @@
                 </div>
             </div>
         </div>
+
+        <!-- TELA 4: PLANO DE AÇÃO -->
+        <div id="viewActionPlan" class="view">
+            <div class="card">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-2 text-center">Plano de Ação: Migração para SendGrid</h2>
+                <p class="text-center text-gray-500 mb-8">Cronograma estimado e divisão de responsabilidades.</p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-center">
+                    <div class="p-4 bg-gray-100 rounded-lg">
+                        <p class="font-bold text-blue-600">Fase 1: Preparação</p>
+                        <p class="text-sm text-gray-600">1 Semana (29/09 - 03/10)</p>
+                        <p class="text-xs font-semibold mt-1">Responsável: Modelo Vidros</p>
+                    </div>
+                    <div class="p-4 bg-gray-100 rounded-lg">
+                        <p class="font-bold text-blue-600">Fase 2: Desenvolvimento</p>
+                        <p class="text-sm text-gray-600">Prazo a definir</p>
+                        <p class="text-xs font-semibold mt-1">Responsável: WebGlass</p>
+                    </div>
+                    <div class="p-4 bg-gray-100 rounded-lg">
+                        <p class="font-bold text-blue-600">Fase 3: Validação e Go-Live</p>
+                        <p class="text-sm text-gray-600">Prazo a definir</p>
+                        <p class="text-xs font-semibold mt-1">Responsável: Ambos</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Coluna Modelo Vidros -->
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800">✅ Tarefas: Modelo Vidros</h3>
+                        <div class="mt-6 flow-root">
+                            <ul class="space-y-8">
+                                <li>
+                                    <div class="relative">
+                                        <span class="absolute top-1 left-0 flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-white font-bold">1</span>
+                                        <div class="ml-10">
+                                            <h4 class="font-semibold text-gray-700">Decisão e Criação da Conta</h4>
+                                            <p class="mt-1 text-sm text-gray-600">Definir o plano (Essentials 100K recomendado), criar a conta no SendGrid e cadastrar o método de pagamento.</p>
+                                            <p class="mt-1 text-xs text-blue-500 font-semibold">Prazo: Início da Semana 1</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="relative">
+                                        <span class="absolute top-1 left-0 flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-white font-bold">2</span>
+                                        <div class="ml-10">
+                                            <h4 class="font-semibold text-gray-700">Autenticação de Domínio (SPF & DKIM)</h4>
+                                            <p class="mt-1 text-sm text-gray-600">No painel SendGrid, seguir os passos para autenticar o domínio de envio. O sistema fornecerá registros DNS que devem ser inseridos no painel de controle do seu domínio. <b class="text-red-600">Passo crítico para a entregabilidade.</b></p>
+                                            <p class="mt-1 text-xs text-blue-500 font-semibold">Prazo: Meio da Semana 1</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                 <li>
+                                    <div class="relative">
+                                        <span class="absolute top-1 left-0 flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-white font-bold">3</span>
+                                        <div class="ml-10">
+                                            <h4 class="font-semibold text-gray-700">Definição e Verificação de Remetentes</h4>
+                                            <p class="mt-1 text-sm text-gray-600">Cadastrar e verificar cada endereço de e-mail que será usado como remetente (ex: `contato@`, `nfe@`, `vendas@`) no painel do SendGrid.</p>
+                                            <p class="mt-1 text-xs text-blue-500 font-semibold">Prazo: Meio da Semana 1</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="relative">
+                                        <span class="absolute top-1 left-0 flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-white font-bold">4</span>
+                                        <div class="ml-10">
+                                            <h4 class="font-semibold text-gray-700">Geração da Chave de API</h4>
+                                            <p class="mt-1 text-sm text-gray-600">Gerar uma "API Key" com permissões de "Mail Send" e compartilhá-la de forma <b class="text-gray-800">segura</b> com a WebGlass (não usar e-mail ou WhatsApp).</p>
+                                            <p class="mt-1 text-xs text-blue-500 font-semibold">Prazo: Final da Semana 1</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="relative">
+                                        <span class="absolute top-1 left-0 flex h-6 w-6 items-center justify-center rounded-full bg-blue-500 text-white font-bold">5</span>
+                                        <div class="ml-10">
+                                            <h4 class="font-semibold text-gray-700">Validação e Homologação</h4>
+                                            <p class="mt-1 text-sm text-gray-600">Após a implementação da WebGlass, realizar testes de envio a partir do sistema e validar o recebimento em diversas caixas de entrada para aprovar a subida para produção.</p>
+                                            <p class="mt-1 text-xs text-blue-500 font-semibold">Prazo: A ser definido com a WebGlass</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                     <!-- Coluna WebGlass -->
+                    <div class="border border-gray-200 rounded-lg p-6">
+                        <h3 class="text-xl font-bold text-gray-800">💻 Tarefas: WebGlass</h3>
+                         <div class="mt-6 flow-root">
+                            <ul class="space-y-8">
+                                <li>
+                                    <div class="relative">
+                                        <span class="absolute top-1 left-0 flex h-6 w-6 items-center justify-center rounded-full bg-gray-700 text-white font-bold">1</span>
+                                        <div class="ml-10">
+                                            <h4 class="font-semibold text-gray-700">Análise e Planejamento</h4>
+                                            <p class="mt-1 text-sm text-gray-600">Receber a chave de API e analisar o código-fonte para mapear todos os pontos de envio de e-mail e confirmar qual endereço remetente (`From`) deve ser usado para cada tipo de disparo.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="relative">
+                                        <span class="absolute top-1 left-0 flex h-6 w-6 items-center justify-center rounded-full bg-gray-700 text-white font-bold">2</span>
+                                        <div class="ml-10">
+                                            <h4 class="font-semibold text-gray-700">Desenvolvimento da Integração</h4>
+                                            <p class="mt-1 text-sm text-gray-600">Substituir o método de envio de e-mail atual pela chamada à API do SendGrid, implementando tratamento de erros e logs.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                 <li>
+                                    <div class="relative">
+                                        <span class="absolute top-1 left-0 flex h-6 w-6 items-center justify-center rounded-full bg-gray-700 text-white font-bold">3</span>
+                                        <div class="ml-10">
+                                            <h4 class="font-semibold text-gray-700">Testes em Homologação</h4>
+                                            <p class="mt-1 text-sm text-gray-600">Publicar as alterações em um ambiente de testes e realizar os testes funcionais para validar a integração.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li>
+                                    <div class="relative">
+                                        <span class="absolute top-1 left-0 flex h-6 w-6 items-center justify-center rounded-full bg-gray-700 text-white font-bold">4</span>
+                                        <div class="ml-10">
+                                            <h4 class="font-semibold text-gray-700">Implantação em Produção</h4>
+                                            <p class="mt-1 text-sm text-gray-600">Após aprovação da Modelo Vidros, publicar a nova versão em produção e monitorar os primeiros envios.</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -308,6 +441,7 @@
                     if (button.id === 'btnEssential') document.getElementById('viewEssential').classList.add('active');
                     if (button.id === 'btnPro') document.getElementById('viewPro').classList.add('active');
                     if (button.id === 'btnCompare') document.getElementById('viewCompare').classList.add('active');
+                    if (button.id === 'btnActionPlan') document.getElementById('viewActionPlan').classList.add('active');
                 });
             });
 
