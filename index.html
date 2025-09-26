@@ -46,15 +46,14 @@
         <!-- Cabeçalho -->
         <header class="mb-6">
             <h1 class="text-3xl font-bold text-gray-800">Análise de Custos e Planos: SendGrid</h1>
-            <p class="text-gray-500 mt-1">Análise focada no histórico de envios de 2025.</p>
+            <p class="text-gray-500 mt-1">Análise focada no histórico de envios de 2025 de Janeiro até Setembro.</p>
             <p class="text-sm text-gray-400 mt-1" id="exchangeRateNote"></p>
         </header>
 
         <!-- Navegação -->
-        <nav class="mb-8 p-1.5 bg-gray-200 rounded-lg flex flex-wrap space-x-2 max-w-xl">
+        <nav class="mb-8 p-1.5 bg-gray-200 rounded-lg flex flex-wrap space-x-2 max-w-2xl">
             <button id="btnEssential" class="nav-btn flex-1 text-center active">Análise Essential</button>
-            <button id="btnPro" class="nav-btn flex-1 text-center">Análise Pro</button>
-            <button id="btnCompare" class="nav-btn flex-1 text-center">Comparativo</button>
+            <button id="btnCompare" class="nav-btn flex-1 text-center">Comparativo Essential X Pro</button>
             <button id="btnActionPlan" class="nav-btn flex-1 text-center mt-2 md:mt-0">Plano de Ação</button>
         </nav>
 
@@ -65,22 +64,22 @@
                 <div class="card text-center">
                     <h3 class="text-sm font-medium text-gray-500">Custo Total (Plano 50K)</h3>
                     <p class="text-2xl md:text-3xl font-bold text-gray-800 mt-2" id="totalCost50k"></p>
-                    <span class="inline-block bg-yellow-100 text-yellow-800 text-xs font-semibold mt-2 px-2.5 py-0.5 rounded-full">Custo Variável</span>
+                    <span id="badge50k" class="inline-block bg-green-100 text-green-800 text-xs font-semibold mt-2 px-2.5 py-0.5 rounded-full">Opção Mais Econômica</span>
                 </div>
                 <div class="card text-center">
                     <h3 class="text-sm font-medium text-gray-500">Custo Total (Plano 100K)</h3>
                     <p class="text-2xl md:text-3xl font-bold text-gray-800 mt-2" id="totalCost100k"></p>
-                    <span class="inline-block bg-green-100 text-green-800 text-xs font-semibold mt-2 px-2.5 py-0.5 rounded-full">Opção Mais Econômica</span>
+                    <span id="badge100k" class="inline-block bg-blue-100 text-blue-800 text-xs font-semibold mt-2 px-2.5 py-0.5 rounded-full">Custo Fixo Mensal</span>
                 </div>
                 <div class="card text-center">
-                    <h3 class="text-sm font-medium text-gray-500">Economia Total</h3>
-                    <p class="text-2xl md:text-3xl font-bold mt-2 text-green-500" id="totalSavings"></p>
-                    <p class="text-xs text-gray-500 mt-1">ao optar pelo plano 100K</p>
+                    <h3 class="text-sm font-medium text-gray-500">Diferença de Custo</h3>
+                    <p class="text-2xl md:text-3xl font-bold mt-2 text-gray-700" id="totalSavings"></p>
+                    <p class="text-xs text-gray-500 mt-1" id="savingsSubtitle">do plano 100K vs 50K</p>
                 </div>
                 <div class="card text-center bg-gray-800 text-white">
-                    <h3 class="text-sm font-medium text-gray-300">Recomendação Histórica</h3>
-                    <p class="text-2xl font-bold mt-2">Essentials 100K</p>
-                    <p class="text-xs text-gray-400 mt-1">Menor custo no período</p>
+                    <h3 class="text-sm font-medium text-gray-300">Recomendação Estratégica</h3>
+                    <p class="text-2xl font-bold mt-2" id="recommendationTitle">Essentials 100K</p>
+                    <p class="text-xs text-gray-400 mt-1" id="recommendationSubtitle">Previsibilidade e Escalabilidade</p>
                 </div>
             </div>
              <!-- Gráfico e Conclusão -->
@@ -92,12 +91,12 @@
                 <div class="card">
                     <h2 class="text-xl font-semibold text-gray-700 mb-4">Análise - Planos Essential</h2>
                     <div class="space-y-4 text-gray-600">
-                        <p>Com os dados de 2025, o plano <b class="text-gray-800">Essentials 100K</b> se mostra a opção mais vantajosa.</p>
-                        <p>Os picos de envio, especialmente em Agosto, elevaram muito o custo do plano 50K, resultando em uma economia de <b class="text-green-500" id="savingsTextEssential"></b> ao escolher o plano de custo fixo.</p>
+                        <p id="analysisText1">Apesar do plano <b class="text-gray-800">Essentials 50K</b> ter sido marginalmente mais barato no período, a recomendação estratégica é o plano <b class="text-gray-800">Essentials 100K</b>.</p>
+                        <p id="analysisText2">A pequena diferença de custo é compensada pela <b class="text-blue-600">previsibilidade orçamentária</b> (custo fixo) e pela <b class="text-blue-600">margem segura para crescimento</b> no volume de envios, evitando taxas surpresa.</p>
                         <h4 class="font-semibold text-gray-700 pt-2">Trade-off a ser considerado:</h4>
                         <ul class="list-disc list-inside space-y-2">
-                            <li><b class="text-red-600">Plano 50K:</b> Custo variável e imprevisível, mais caro no cenário atual. <span class="text-xs block text-gray-500">Custo adicional de <b class="text-gray-700">$0.00133 / R$ 0,0073</b> por e-mail excedente.</span></li>
-                            <li><b class="text-blue-600">Plano 100K:</b> Mais econômico, com total previsibilidade orçamentária.</li>
+                            <li><b class="text-green-600">Plano 50K:</b> Custo variável, mais econômico no histórico, mas com risco de taxas extras. <span class="text-xs block text-gray-500">Custo adicional de <b class="text-gray-700">$0.00133 / R$ 0,0073</b> por e-mail excedente.</span></li>
+                            <li><b class="text-blue-600">Plano 100K:</b> Custo fixo, ideal para previsibilidade e crescimento.</li>
                         </ul>
                     </div>
                 </div>
@@ -123,72 +122,14 @@
             </div>
         </div>
 
-        <!-- TELA 2: ANÁLISE PRO -->
-        <div id="viewPro" class="view">
-             <!-- KPIs Pro -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                <div class="card text-center">
-                    <h3 class="text-sm font-medium text-gray-500">Custo Total (Pro 100K)</h3>
-                    <p class="text-2xl md:text-3xl font-bold text-gray-800 mt-2" id="totalCostPro"></p>
-                </div>
-                <div class="card text-center">
-                    <h3 class="text-sm font-medium text-gray-500">Custo Total (Essential 100K)</h3>
-                    <p class="text-2xl md:text-3xl font-bold text-gray-800 mt-2" id="totalCost100k_proview"></p>
-                </div>
-                <div class="card text-center">
-                    <h3 class="text-sm font-medium text-gray-500">Diferença de Custo (Pro vs Ess)</h3>
-                    <p class="text-2xl md:text-3xl font-bold mt-2 text-red-500" id="costDifferencePro"></p>
-                </div>
-            </div>
-            <!-- Gráfico e Conclusão Pro -->
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-                <div class="card lg:col-span-2">
-                    <h2 class="text-xl font-semibold text-gray-700 mb-4">Comparativo de Custo Mensal (USD)</h2>
-                    <div class="relative h-96"><canvas id="proChart"></canvas></div>
-                </div>
-                <div class="card">
-                     <h2 class="text-xl font-semibold text-gray-700 mb-4">Análise - Plano Pro</h2>
-                    <div class="space-y-4 text-gray-600">
-                        <p>O plano <b class="text-gray-800">Pro 100K</b> tem um custo fixo significativamente mais alto, resultando em um gasto total <b class="text-red-500" id="proCostMultiplier"></b> maior que a opção Essential mais barata no período.</p>
-                        <p>A migração para este plano se justifica pelo <b class="text-gray-800">acesso a recursos avançados</b>, não pela economia de custos.</p>
-                        <h4 class="font-semibold text-gray-700 pt-2">Quando considerar o Plano Pro?</h4>
-                         <ul class="list-disc list-inside space-y-2">
-                            <li>Necessidade de um <b class="text-blue-600">IP Dedicado</b> para reputação de envio.</li>
-                            <li>Demanda por <b class="text-blue-600">suporte via telefone</b>.</li>
-                            <li>Gerenciamento de <b class="text-blue-600">sub-usuários</b>.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-             <!-- Tabela de Dados Detalhados Pro -->
-            <div class="card mt-8">
-                <h2 class="text-xl font-semibold text-gray-700 mb-4">Dados Detalhados por Mês</h2>
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-gray-500">
-                        <thead class="text-xs text-gray-700 uppercase bg-gray-50">
-                            <tr>
-                                <th scope="col" class="px-6 py-3">Mês</th>
-                                <th scope="col" class="px-6 py-3 text-right">E-mails Enviados</th>
-                                <th scope="col" class="px-6 py-3 text-right">Custo Essential 100K (USD)</th>
-                                <th scope="col" class="px-6 py-3 text-right">Custo Pro 100K (USD)</th>
-                            </tr>
-                        </thead>
-                        <tbody id="proTableBody">
-                            <!-- Linhas serão inseridas via JS -->
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-
-        <!-- TELA 3: COMPARATIVO -->
+        <!-- TELA 2: COMPARATIVO -->
         <div id="viewCompare" class="view">
              <div class="card">
                 <h2 class="text-2xl font-semibold text-gray-700 mb-6 text-center">Comparativo de Recursos: Essential vs. Pro</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                     <!-- Coluna Essential -->
                     <div class="border border-gray-200 rounded-lg p-6">
-                        <h3 class="text-xl font-bold text-green-600">Plano Essential</h3>
+                        <h3 class="text-xl font-bold text-green-600">Plano Essential 100K</h3>
                         <p class="text-gray-500 mb-4">Ideal para marketing e envios transacionais com foco em custo-benefício.</p>
                         <p class="text-2xl font-semibold text-gray-800 mb-4" id="costEssentialCompare"></p>
                         <ul class="space-y-3">
@@ -203,7 +144,7 @@
                     <!-- Coluna Pro -->
                     <div class="border-2 border-blue-500 rounded-lg p-6 relative">
                         <span class="absolute top-0 -translate-y-1/2 bg-blue-500 text-white text-xs font-bold px-3 py-1 rounded-full">RECURSOS ADICIONAIS</span>
-                        <h3 class="text-xl font-bold text-blue-600">Plano Pro</h3>
+                        <h3 class="text-xl font-bold text-blue-600">Plano Pro 100K</h3>
                         <p class="text-gray-500 mb-4">Para empresas que precisam de maior controle, reputação e suporte especializado.</p>
                         <p class="text-2xl font-semibold text-gray-800 mb-4" id="costProCompare"></p>
                         <ul class="space-y-3">
@@ -219,7 +160,7 @@
             </div>
         </div>
 
-        <!-- TELA 4: PLANO DE AÇÃO -->
+        <!-- TELA 3: PLANO DE AÇÃO -->
         <div id="viewActionPlan" class="view">
             <div class="card">
                 <h2 class="text-2xl font-semibold text-gray-700 mb-2 text-center">Plano de Ação: Migração para SendGrid</h2>
@@ -377,32 +318,22 @@
             // --- Cálculos Gerais ---
             const totalCost50kUSD = historicalData.reduce((sum, d) => sum + d.cost50k, 0);
             const totalCost100kUSD = historicalData.reduce((sum, d) => sum + d.cost100k, 0);
-            const totalCostProUSD = PRO_100K_COST_USD * historicalData.length;
 
-            // --- Renderização Tela 1: Essential ---
-            const savingsUSD = totalCost50kUSD - totalCost100kUSD;
+            // --- Renderização Dinâmica Tela 1: Essential ---
+            const savingsUSD = totalCost100kUSD - totalCost50kUSD;
+            
             document.getElementById('totalCost50k').innerHTML = `${formatCurrency(totalCost50kUSD, 'USD')} <span class="text-lg text-gray-500 font-medium">/ ${formatCurrency(totalCost50kUSD * DOLAR_RATE, 'BRL')}</span>`;
             document.getElementById('totalCost100k').innerHTML = `${formatCurrency(totalCost100kUSD, 'USD')} <span class="text-lg text-gray-500 font-medium">/ ${formatCurrency(totalCost100kUSD * DOLAR_RATE, 'BRL')}</span>`;
-            document.getElementById('totalSavings').innerHTML = `${formatCurrency(Math.abs(savingsUSD), 'USD')} <span class="text-lg text-green-700 font-medium">/ ${formatCurrency(Math.abs(savingsUSD * DOLAR_RATE), 'BRL')}</span>`;
-            document.getElementById('savingsTextEssential').textContent = `${formatCurrency(Math.abs(savingsUSD), 'USD')} / ${formatCurrency(Math.abs(savingsUSD * DOLAR_RATE), 'BRL')}`;
+            document.getElementById('totalSavings').innerHTML = `${formatCurrency(savingsUSD, 'USD')} <span class="text-lg text-gray-700 font-medium">/ ${formatCurrency(savingsUSD * DOLAR_RATE, 'BRL')}</span>`;
             
-            // --- Renderização Tela 2: Pro ---
-            const diffProVsEssUSD = totalCostProUSD - totalCost100kUSD;
-            document.getElementById('totalCostPro').innerHTML = `${formatCurrency(totalCostProUSD, 'USD')} <span class="text-lg text-gray-500 font-medium">/ ${formatCurrency(totalCostProUSD * DOLAR_RATE, 'BRL')}</span>`;
-            document.getElementById('totalCost100k_proview').innerHTML = `${formatCurrency(totalCost100kUSD, 'USD')} <span class="text-lg text-gray-500 font-medium">/ ${formatCurrency(totalCost100kUSD * DOLAR_RATE, 'BRL')}</span>`;
-            document.getElementById('costDifferencePro').innerHTML = `${formatCurrency(diffProVsEssUSD, 'USD')} <span class="text-lg text-red-700 font-medium">/ ${formatCurrency(diffProVsEssUSD * DOLAR_RATE, 'BRL')}</span>`;
-            document.getElementById('proCostMultiplier').textContent = `${(totalCostProUSD / totalCost100kUSD).toFixed(1)}x`;
 
-            // --- Renderização Tela 3: Comparativo ---
-            document.getElementById('costEssentialCompare').textContent = `A partir de ${formatCurrency(34.95, 'USD')} / mês`;
-            document.getElementById('costProCompare').textContent = `${formatCurrency(PRO_100K_COST_USD, 'USD')} / mês (fixo)`;
+            // --- Renderização Tela 2: Comparativo ---
+            document.getElementById('costEssentialCompare').textContent = `${formatCurrency(34.95, 'USD')} / mês`;
+            document.getElementById('costProCompare').textContent = `${formatCurrency(PRO_100K_COST_USD, 'USD')} / mês`;
 
-            // --- Renderização das Tabelas ---
+            // --- Renderização da Tabela ---
             const essentialTableBody = document.getElementById('essentialTableBody');
-            const proTableBody = document.getElementById('proTableBody');
-
             historicalData.forEach(data => {
-                // Tabela Essential
                 const essentialRow = document.createElement('tr');
                 essentialRow.className = 'bg-white border-b';
                 if (data.emails > 50000) {
@@ -415,17 +346,6 @@
                     <td class="px-6 py-4 text-right">${formatCurrency(data.cost100k, 'USD')}</td>
                 `;
                 essentialTableBody.appendChild(essentialRow);
-
-                // Tabela Pro
-                const proRow = document.createElement('tr');
-                proRow.className = 'bg-white border-b';
-                proRow.innerHTML = `
-                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">${data.month}</th>
-                    <td class="px-6 py-4 text-right">${data.emails.toLocaleString('pt-BR')}</td>
-                    <td class="px-6 py-4 text-right">${formatCurrency(data.cost100k, 'USD')}</td>
-                    <td class="px-6 py-4 text-right">${formatCurrency(PRO_100K_COST_USD, 'USD')}</td>
-                `;
-                proTableBody.appendChild(proRow);
             });
 
 
@@ -439,18 +359,14 @@
                     views.forEach(view => view.classList.remove('active'));
                     
                     if (button.id === 'btnEssential') document.getElementById('viewEssential').classList.add('active');
-                    if (button.id === 'btnPro') document.getElementById('viewPro').classList.add('active');
                     if (button.id === 'btnCompare') document.getElementById('viewCompare').classList.add('active');
                     if (button.id === 'btnActionPlan') document.getElementById('viewActionPlan').classList.add('active');
                 });
             });
 
-            // --- Inicialização dos Gráficos ---
+            // --- Inicialização do Gráfico ---
             new Chart(document.getElementById('essentialChart').getContext('2d'), {
                 type: 'bar', data: { labels: historicalData.map(d => d.month), datasets: [ { label: 'Custo Plano 50K (USD)', data: historicalData.map(d => d.cost50k), backgroundColor: '#f59e0b' }, { label: 'Custo Plano 100K (USD)', data: historicalData.map(d => d.cost100k), backgroundColor: '#3b82f6' } ] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { callback: value => formatCurrency(value, 'USD') } } } }
-            });
-            new Chart(document.getElementById('proChart').getContext('2d'), {
-                type: 'bar', data: { labels: historicalData.map(d => d.month), datasets: [ { label: 'Custo Essential 100K (USD)', data: historicalData.map(d => d.cost100k), backgroundColor: '#3b82f6' }, { label: 'Custo Pro 100K (USD)', data: historicalData.map(d => PRO_100K_COST_USD), backgroundColor: '#8b5cf6' } ] }, options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { callback: value => formatCurrency(value, 'USD') } } } }
             });
         });
     </script>
